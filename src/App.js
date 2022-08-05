@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import { useState } from 'react';
-
+import UploadFile from "./UploadFile"
 const instance = axios.create({
   baseURL: "https://dev-mgmt.beije.it/",
   headers: {
@@ -23,10 +23,14 @@ function App() {
       })
     }} className="App">
 
-      <input type="file" onChange={e => {
-        setData(e)
-      }} />
-      
+      <UploadFile
+        style={{ marginTop: "3rem", marginBottom: "3rem" }}
+        value={data}
+        onChange={e => {
+          setData(e.content)
+        }}
+      />
+
       <input type="submit" />
     </form>
   );
