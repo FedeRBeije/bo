@@ -27,9 +27,15 @@ function App() {
         style={{ marginTop: "3rem", marginBottom: "3rem" }}
         value={data}
         onChange={e => {
+          console.log(e.content);
           setData(e.content)
         }}
       />
+
+      <input type="file" onChange={e => {
+        console.log(e.target.files[0]);
+        setData(e)
+      }} />
 
       <input type="submit" />
     </form>

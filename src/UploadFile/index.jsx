@@ -53,9 +53,9 @@ const UploadFile = ({ value, onChange, isBlogMassive, noEdit, style, ...props })
           e.target.value = "";
         }}
       />
-      {!noEdit && <label className={styles["upload-btn"]} htmlFor={id}>
+      {/* {!noEdit && <label className={styles["upload-btn"]} htmlFor={id}>
         <span>{value ? "Modifica" : "Carica documento"}</span>
-      </label>}
+      </label>} */}
 
       {value && (
         <button
