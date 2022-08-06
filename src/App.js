@@ -25,7 +25,7 @@ const initState = {
   fileName: "",
 }
 let saved;
-let id;
+let id = 0;
 
 async function uploadDoc(resource, docObj, method) {
   return await instance(resource, {
@@ -75,7 +75,7 @@ const App = ({ isNew }) => {
     else {
       const res = await uploadDoc("/admin/material", formData, "post");
       console.log(res);
-      // link(`/admin/material_link/${id}`,{ ...state, link: null, fileName: null }, "post");
+      link(`/admin/material_link/${res.id}`,{ ...state, link: null, fileName: null }, "post");
     }
 
   }
