@@ -1,58 +1,157 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useId, useState } from 'react'
+// components
+
+import CardContainerMemo from './CardContainer';
+import Select from "./Select";
+import SaveContainerMemo from './SaveContainer';
+import Input from './Input';
+import UploadFile from './UploadFile';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import UploadFile from "./UploadFile"
+
 const instance = axios.create({
   baseURL: "http://localhost:8080/mgmt/",
   headers: {
-
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIkhSIiwiQ09NTUVSQ0lBTCJdLCJpYXQiOjE2NTk3MDk4MDQsImV4cCI6MTY1OTcxMzQwNH0.XotrfB6CUPywfI79iDj0Yq0BtykZ4p9YBnVHMfvkJmo", //devi mettere il token dopo il bearer
+    Authorization: "Bearer ",
   },
 });
 
+const initState = {
+  description: "",
+  academy: "FE",
+  title: "",
+  type: "document",
+  file: "",
+  link: "",
+  fileName: "",
+}
+let saved;
+let id;
 
-function App() {
-  const [data, setData] = useState();
+async function uploadDoc(resource, docObj, method) {
+  return await instance(resource, {
+    data: docObj,
+    method,
+    headers: {
+      'Content-type': 'multipart/form-data'
+    }
+  })
+    .then((response) => response.data)
+    .catch((error) => error);
+}
+
+async function link(resource, obj, method) {
+  return await instance(resource, {
+    data: obj,
+    method
+  })
+}
+
+const App = ({ isNew }) => {
+
+  const [state, setState] = useState(initState);
+  const [shouldShowModal, setShouldShowModal] = useState(false);
+  const [goBack, setGoBack] = useState(false);
+
+  const toastId = useId();
+
   useEffect(() => {
-    
-  }, [data])
-  
+   (async()=>{
+   })()
+
+
+  }, [])
+
+  const handleSubmitDoc = async (e) => {
+    e.preventDefault();
+
+    let formData = new FormData();
+    formData.append("file", state.file);
+
+    saved = true;
+
+    if (state.link) link(`/admin/material_link/`,{ ...state, file: null, fileName: null }, "post");
+
+    else {
+      const res = await uploadDoc("/admin/material", formData, "post");
+      console.log(res);
+      // link(`/admin/material_link/${id}`,{ ...state, link: null, fileName: null }, "post");
+    }
+
+  }
+
+  const handleSetAcademy = (e) => {
+    setState({ ...state, academy: e })
+  }
+
   return (
-    <form encType='multipart/form-data' onSubmit={async (e) => {
-      e.preventDefault()
-      let formData = new FormData();
-      formData.append("file", data)
-      
-      console.log(formData.get("file"))
-      await instance.post("/admin/material", formData,
-        {
-          // params:{
-          //  formData
-          // },
-          headers: {
-            'Content-type': 'multipart/form-data'
-          },
-        })
-    }}
-      className="App">
 
-      <UploadFile
-        style={{ marginTop: "3rem", marginBottom: "3rem" }}
-        value={data}
-        onChange={e => {
-          console.log(e.content);
-          setData(e.content)
-        }}
-      />
 
-      <input type="file" onChange={e => {
-        setData(e.target.files[0])
-      }} />
+    <form>
 
-      <input type="submit" />
+      <CardContainerMemo head="Documento">
+
+        <Select
+          style={{ maxWidth: "50%", marginTop: "2rem" }}
+          value={state.academy}
+          label="Academy"
+          options={[
+            { value: "FE", label: "Front-end" },
+            { value: "BE", label: "Back-end" },
+          ]}
+          onChange={handleSetAcademy}
+        />
+
+        <Input
+          style={{ width: "50%", marginTop: "3rem" }}
+          placeholder="Titolo"
+          name="title"
+          value={state.title}
+          onChange={(e) => {
+            setState((p) => ({ ...p, title: e.target.value }));
+          }}
+        />
+
+        <Input
+          disabled={state.file_base64 ? true : false}
+          style={{ width: "50%", marginTop: "3rem" }}
+          placeholder="Link alla risorsa"
+          name="name"
+          value={state.link}
+          onChange={(e) => {
+            setState((p) => ({ ...p, link: e.target.value }));
+          }}
+        />
+
+        <UploadFile
+          disabled={state.link ? true : false}
+          style={{ marginTop: "3rem", marginBottom: "3rem" }}
+          value={state.file_base64}
+          onChange={e => {
+            setState({ ...state, file_base64: e.content, fileName: e.fileName })
+          }}
+        />
+
+        <p>{state.fileName}</p>
+      </CardContainerMemo>
+
+      <CardContainerMemo
+        head="Descrizione"
+        style={{ minHeight: "30rem" }}
+      >
+        <textarea
+          style={{ width: "50%", height: "30rem", marginTop: "2rem" }}
+          placeholder="Descrizione"
+          name="title"
+          value={state.description}
+          onChange={(e) => {
+            setState((p) => ({ ...p, description: e.target.value }));
+          }}
+        />
+      </CardContainerMemo>
+
+      <SaveContainerMemo isNew={isNew} onSubmit={handleSubmitDoc} />
     </form>
-  );
+  )
 }
 
 export default App;
