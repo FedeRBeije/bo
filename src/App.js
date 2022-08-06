@@ -11,7 +11,7 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: "http://localhost:8080/mgmt/",
   headers: {
-    Authorization: "Bearer ",
+    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiLCJBRE1JTiIsIkhSIiwiQ09NTUVSQ0lBTCJdLCJpYXQiOjE2NTk3Nzc4NTUsImV4cCI6MTY1OTc4MTQ1NX0.z-W8dyXov7c1OqHTz3CNyeMJGnBS_kMIaOfWMWGZJTk",
   },
 });
 
@@ -65,11 +65,12 @@ const App = ({ isNew }) => {
     e.preventDefault();
 
     let formData = new FormData();
-    formData.append("file", state.file);
+    console.log(state.file)
+    formData.append("file", state.file.content);
 
     saved = true;
 
-    if (state.link) link(`/admin/material_link/`,{ ...state, file: null, fileName: null }, "post");
+    if (state.link) link(`/admin/material_link/${id}`,{ ...state, file: null, fileName: null }, "post");
 
     else {
       const res = await uploadDoc("/admin/material", formData, "post");
