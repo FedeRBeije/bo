@@ -66,7 +66,7 @@ const App = ({ isNew }) => {
 
     let formData = new FormData();
     console.log(state.file)
-    formData.append("file", state.file.content);
+    formData.append("file", state.file);
 
     saved = true;
 
@@ -128,7 +128,7 @@ const App = ({ isNew }) => {
           style={{ marginTop: "3rem", marginBottom: "3rem" }}
           value={state.file_base64}
           onChange={e => {
-            setState({ ...state, file_base64: e.content, fileName: e.fileName })
+            setState({ ...state, file: e.content, fileName: e.fileName })
           }}
         />
 

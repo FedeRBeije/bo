@@ -45,7 +45,7 @@ const UploadFile = ({ value, onChange, isBlogMassive, noEdit, style, ...props })
           const { content, error } = await readFile(e.target.files[0]);
 
           if (!error) {
-            onChange({content, fileName: e.target.files[0].name});
+            onChange({content: e.target.files[0], fileName: e.target.files[0].name});
           } else {
             onChange("");
           }
