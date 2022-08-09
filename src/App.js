@@ -25,7 +25,7 @@ const initState = {
   fileName: "",
 }
 let saved;
-let id;
+let id = 0;
 
 async function uploadDoc(resource, docObj, method) {
   return await instance(resource, {
