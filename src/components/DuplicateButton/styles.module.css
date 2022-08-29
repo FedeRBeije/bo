@@ -1,0 +1,32 @@
+.action-btn {
+    padding-inline: 8px;
+    padding-block: 6px;
+    background-color: transparent;
+    border: 2px solid rgb(0, 60, 138);
+    color: rgb(0, 60, 138);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.action-btn:hover {
+    background-color: rgb(0, 60, 138);
+    color: var(--white);
+}
+
+.detail-btn{
+    padding-inline: 10px;
+  padding-block: 8px;
+  border-radius: 4px;
+  background-color: rgba(0, 60, 138, 0.907);
+  color: var(--white);
+  border: 1px solid rgba(0, 60, 138, 0.907);
+  cursor: pointer;
+  box-shadow: var(--bs);
+  margin-right: 1rem;
+}
+
+.detail-btn:hover {
+    background-color: rgb(0, 60, 138);
+    border-color: rgb(0, 60, 138);
+  }
